@@ -84,13 +84,53 @@ var Orb = (function () {
 
     };
 
+    var findType = function () {
+
+        var oneCT = 0,
+        nonOne = false;
+        oneTypes = ['pure', 'dual', 'tripple', 'quad'];
+
+        // find count of 1's in the ratio
+        this.ratio.forEach(function (pt) {
+
+            if (pt === 1) {
+
+                oneCT += 1;
+
+            } else {
+
+                if (pt != 0) {
+
+                    nonOne = true;
+
+                }
+
+            }
+
+        });
+
+        // default to a type based on count of ones in ratio
+        this.type = oneTypes[oneCT - 1];
+
+        // if any value that is not 1 is in the ratio then default to composite
+        if (nonOne) {
+
+            this.type = 'composite';
+
+        }
+
+    };
+
     // the Orb constructor
     var Orb = function (opt) {
+
+        var self = this;
 
         opt = opt || {};
         opt.points = opt.points || null;
         opt.ratio = opt.ratio || null;
         opt.level = opt.level || null;
+        opt.recipies = opt.recipies || [];
 
         // if points i opt, set by points
         if (opt.points) {
@@ -119,6 +159,15 @@ var Orb = (function () {
             setByPoints.call(this, [1, 0, 0, 0]);
 
         }
+
+        this.worth = 0;
+        this.points.forEach(function (pt) {
+
+            self.worth += pt;
+
+        });
+
+        findType.call(this);
 
     };
 

@@ -23,9 +23,50 @@ var orb_by_orbs = new Orb({
 
 });
 
+// pure Orb
+var pure = new Orb({
+    points : [0,17,0,0]
+});
+
+// dual Orb
+var dual = new Orb({
+    points : [0,5,0,5]
+});
+
+// tripple Orb
+var tripple = new Orb({
+    points : [2,2,2,0]
+});
+
+// quad
+var quad = new Orb({
+    ratio : [1,1,1,1],
+	level: 7
+});
+
+
+console.log('default');
 console.log(orb_def);
+
+console.log('by points');
 console.log(orb_by_points);
+
+console.log('by ratio');
 console.log(orb_by_ratio);
+
+console.log('by orbs');
 console.log(orb_by_orbs);
+
+console.log('pure');
+console.log(pure);
+
+console.log('dual');
+console.log(dual);
+
+console.log('tripple');
+console.log(tripple);
+
+console.log('quad');
+console.log(quad);
 
 </script>
