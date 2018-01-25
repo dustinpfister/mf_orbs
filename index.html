@@ -16,8 +16,16 @@ var orb_by_ratio = new Orb({
     level: 3
 });
 
+// new orb from other orbs
+var orb_by_orbs = new Orb({
+
+   orbs : [orb_by_ratio,orb_by_points]
+
+});
+
 console.log(orb_def);
 console.log(orb_by_points);
 console.log(orb_by_ratio);
+console.log(orb_by_orbs);
 
 </script>
