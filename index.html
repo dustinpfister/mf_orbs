@@ -1,0 +1,23 @@
+<script src="./src/orb.js"></script>
+
+<script>
+
+// new default Orb
+var orb_def = new Orb();
+
+// new Orb set by points
+var orb_by_points = new Orb({
+    points : [3,15,6,6]
+});
+
+// new Orb set by ratio, and level
+var orb_by_ratio = new Orb({
+    ratio : [1,5,2,2],
+    level: 3
+});
+
+console.log(orb_def);
+console.log(orb_by_points);
+console.log(orb_by_ratio);
+
+</script>
