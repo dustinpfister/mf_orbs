@@ -1,5 +1,77 @@
 var Orb = (function () {
 
+    // Greatest Common Deviser
+    var gcd = function (a, b) {
+        if (!b) {
+            return a;
+        }
+
+        return gcd(b, a % b);
+    },
+
+    // get the number I need to divide points by to get the simple ratio
+    getGcdFromPoints = function (points) {
+
+        var ai = 0,
+        d,
+        gd = 1,
+        bi;
+        while (ai < points.length) {
+
+            if (points[ai] < 1) {
+
+                ai += 1;
+                continue;
+            }
+
+            bi = 0;
+            while (bi < points.length) {
+
+                if (bi === ai || points[bi] < 1) {
+
+                    bi += 1;
+                    continue;
+
+                }
+
+                console.log(points[ai] + ',' + points[bi]);
+
+                d = gcd(points[ai], points[bi]);
+
+                if (d > gd) {
+
+                    gd = d;
+
+                }
+
+                bi += 1;
+            }
+
+            ai += 1;
+
+        }
+
+        return gd;
+
+    },
+
+    getSimpleRatio = function (points) {
+
+        var gd = getGcdFromPoints(points);
+
+        return points.map(function (pt) {
+
+            return pt / gd;
+
+        });
+
+    };
+
+    console.log(gcd(4, 10));
+    console.log(gcd(10, 4));
+
+    console.log(getSimpleRatio([5, 10, 0, 0]));
+
     // set orb values by a given ratio, and level
     var setByRatio = function (ratio, level) {
 
@@ -130,7 +202,14 @@ var Orb = (function () {
         opt.points = opt.points || null;
         opt.ratio = opt.ratio || null;
         opt.level = opt.level || null;
-        opt.recipies = opt.recipies || [];
+
+        this.recipies = opt.recipies || [{
+
+                    type: 'heal',
+                    ratio: [0, 0, 2, 5]
+
+                }
+            ];
 
         // if points i opt, set by points
         if (opt.points) {

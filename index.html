@@ -1,50 +1,59 @@
-<script src="./src/orb.js"></script>
-
+<script src = "./src/orb.js"></script>
 <script>
 
-// new default Orb
-var orb_def = new Orb();
+    // new default Orb
+    var orb_def = new Orb();
 
 // new Orb set by points
 var orb_by_points = new Orb({
-    points : [3,15,6,6]
-});
+        points: [3, 15, 6, 6]
+    });
 
 // new Orb set by ratio, and level
 var orb_by_ratio = new Orb({
-    ratio : [1,5,2,2],
-    level: 3
-});
+        ratio: [1, 5, 2, 2],
+        level: 3
+    });
 
 // new orb from other orbs
 var orb_by_orbs = new Orb({
 
-   orbs : [orb_by_ratio,orb_by_points]
+        orbs: [orb_by_ratio, orb_by_points]
 
-});
+    });
 
 // pure Orb
 var pure = new Orb({
-    points : [0,17,0,0]
-});
+        points: [0, 17, 0, 0]
+    });
 
 // dual Orb
 var dual = new Orb({
-    points : [0,5,0,5]
-});
+        points: [0, 5, 0, 5]
+    });
 
 // tripple Orb
 var tripple = new Orb({
-    points : [2,2,2,0]
-});
+        points: [2, 2, 2, 0]
+    });
 
 // quad
 var quad = new Orb({
-    ratio : [1,1,1,1],
-	level: 7
-});
+        ratio: [1, 1, 1, 1],
+        level: 7
+    });
 
 
+// heal
+var heal = new Orb({
+        points: [0, 0, 20, 50]//,
+        //level: 7
+    });
+
+console.log('heal');
+console.log(heal);
+
+/*
 console.log('default');
 console.log(orb_def);
 
@@ -68,5 +77,6 @@ console.log(tripple);
 
 console.log('quad');
 console.log(quad);
+*/
 
 </script>
