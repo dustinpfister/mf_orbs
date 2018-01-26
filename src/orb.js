@@ -53,27 +53,38 @@ var Orb = (function () {
 
     },
 
+    getElStats = function (points) {
+
+        var elStats = {
+
+            ct: 0,
+            i: []
+        };
+
+        points.forEach(function (pt, i) {
+
+            if (pt > 0) {
+
+                elStats.ct += 1;
+                elStats.i.push(i);
+
+            }
+
+        });
+
+        return elStats;
+
+    },
+
     // get the simple ratio from a set of points (or simplify a ratio)
     // [0,0,14,2] => [0,0,7,1]
     getSimpleRatio = function (points) {
 
         var gd = getGcdFromPoints(points),
-        elStats = {
-
-            ct: 0,
-            i: []
-
-        };
+        elStats = getElStats(points);
 
         // get simple ratio by diving all points by gd
         var simp = points.map(function (pt, i) {
-
-                if (pt > 0) {
-
-                    elStats.ct += 1;
-                    elStats.i.push(i);
-
-                }
 
                 return pt / gd;
 
@@ -93,28 +104,15 @@ var Orb = (function () {
     // set level when points, and ratio are valid
     setLevel = function () {
 
-        var i;
+        // for pure,dual,triple, and quad this will work
+        this.level = this.points[this.elStats.i[0]];
 
-        this.level = 1;
-
-        console.log(this.type);
-        console.log(this.ratio);
-
-        if (this.type === 'pure') {
-
-            i = 0;
-            while (i < 4) {
-
-                if (this.points[i] > 0) {
-                    this.level = this.points[i];
-                    return;
-
-                }
-
-                i += 1;
-            }
-
-        }
+		if(this.type === 'composite' || this.type === 'recipe'){
+			
+			
+			this.level =  getGcdFromPoints(this.points);
+			
+		}
 
     }
 
@@ -147,33 +145,9 @@ var Orb = (function () {
 
         this.points = Array.from(points);
         this.ratio = [];
-        this.level = Infinity;
-
-        // the lowest point is the level
-        /*
-        this.points.forEach(function (pt, i) {
-
-        if (pt < self.level && pt > 0) {
-
-        self.level = pt;
-
-        }
-
-        });
-         */
 
         // find the simple ratio
         this.ratio = getSimpleRatio(this.points);
-        this.level = 1;
-
-        /*
-        // find the ratio from points
-        this.points.forEach(function (pt, i) {
-
-        self.ratio[i] = pt / self.level;
-
-        });
-         */
 
     };
 
@@ -217,7 +191,7 @@ var Orb = (function () {
 
         var oneCT = 0,
         nonOne = false;
-        oneTypes = ['pure', 'dual', 'tripple', 'quad'];
+        oneTypes = ['pure', 'dual', 'triple', 'quad'];
 
         // find count of 1's in the ratio
         this.ratio.forEach(function (pt) {
@@ -295,6 +269,9 @@ var Orb = (function () {
             setByPoints.call(this, [1, 0, 0, 0]);
 
         }
+
+        // set el stats
+        this.elStats = getElStats(this.points);
 
         this.worth = 0;
         this.points.forEach(function (pt) {
