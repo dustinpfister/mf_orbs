@@ -42,9 +42,6 @@ var Orb = (function () {
 
                 }
 
-                //console.log(points[ai] +','+ points[bi] + ':'+d);
-
-
                 if (d > gd) {
 
                     gd = d;
@@ -62,16 +59,18 @@ var Orb = (function () {
 
     },
 
+    // get the Element Stats based on the given points (or ratio)
     getElStats = function (points) {
 
         var elStats = {
 
-            ct: 0,
-            i: [],
-            equalAll: false,
-            gdc: getGcdFromPoints(points)
+            ct: 0, // element count [0,4,0,0] = 1, [7,0,6,7] = 3
+            i: [], // indexes of elements
+            equalAll: false, // all elements equal each other (pure,dual,triple,and quad)
+            gcd: getGcdFromPoints(points) // the gcd
         };
 
+        // get count and indexes
         points.forEach(function (pt, i) {
 
             if (pt > 0) {
@@ -83,6 +82,7 @@ var Orb = (function () {
 
         });
 
+        // are all the Elements equal to each other?
         if (elStats.ct === 1) {
 
             elStats.equalAll = true;
@@ -123,14 +123,9 @@ var Orb = (function () {
 
             });
 
-        // special case for pure Orbs [0,17,0,0] should be [0,1,0,0]
-        //if (elStats.ct === 1) {
-
-        //    simp[elStats.i[0]] = 1;
-
-        //}
-
-        // special case for pure, dual, triple, and quad
+        // special case for pure, dual, triple, and quad,
+        // always assure the ratio is 1:1 based on stats from
+        // elStats and not getGcdFromPoints
         if (elStats.equalAll) {
 
             elStats.i.forEach(function (i) {
