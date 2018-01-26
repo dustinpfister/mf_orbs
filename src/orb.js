@@ -27,7 +27,7 @@ var Orb = (function () {
             bi = 0;
             while (bi < points.length) {
 
-                if (bi === ai || points[bi] < 1 || points[bi] === points[ai]) {
+                if (bi === ai || points[bi] < 1) {
 
                     bi += 1;
                     continue;
@@ -35,6 +35,15 @@ var Orb = (function () {
                 }
 
                 d = gcd(points[ai], points[bi]);
+
+                if (points[ai] === points[bi]) {
+
+                    d = 1;
+
+                }
+
+                //console.log(points[ai] +','+ points[bi] + ':'+d);
+
 
                 if (d > gd) {
 
@@ -59,6 +68,7 @@ var Orb = (function () {
 
             ct: 0,
             i: [],
+            equalAll: false,
             gdc: getGcdFromPoints(points)
         };
 
@@ -72,6 +82,28 @@ var Orb = (function () {
             }
 
         });
+
+        if (elStats.ct === 1) {
+
+            elStats.equalAll = true;
+
+        } else {
+
+            elStats.i.forEach(function (i) {
+
+                if (i + 1 < elStats.i.length) {
+
+                    if (points[i] === points[elStats.i[i + 1]]) {
+
+                        elStats.equalAll = true;
+
+                    }
+
+                }
+
+            })
+
+        }
 
         return elStats;
 
@@ -92,9 +124,20 @@ var Orb = (function () {
             });
 
         // special case for pure Orbs [0,17,0,0] should be [0,1,0,0]
-        if (elStats.ct === 1) {
+        //if (elStats.ct === 1) {
 
-            simp[elStats.i[0]] = 1;
+        //    simp[elStats.i[0]] = 1;
+
+        //}
+
+        // special case for pure, dual, triple, and quad
+        if (elStats.equalAll) {
+
+            elStats.i.forEach(function (i) {
+
+                simp[i] = 1;
+
+            });
 
         }
 
