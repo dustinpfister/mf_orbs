@@ -27,7 +27,7 @@ var Orb = (function () {
             bi = 0;
             while (bi < points.length) {
 
-                if (bi === ai || points[bi] < 1) {
+                if (bi === ai || points[bi] < 1 || points[bi] === points[ai]) {
 
                     bi += 1;
                     continue;
@@ -58,7 +58,8 @@ var Orb = (function () {
         var elStats = {
 
             ct: 0,
-            i: []
+            i: [],
+            gdc: getGcdFromPoints(points)
         };
 
         points.forEach(function (pt, i) {
@@ -107,12 +108,13 @@ var Orb = (function () {
         // for pure,dual,triple, and quad this will work
         this.level = this.points[this.elStats.i[0]];
 
-		if(this.type === 'composite' || this.type === 'recipe'){
-			
-			
-			this.level =  getGcdFromPoints(this.points);
-			
-		}
+        if (this.type === 'composite' || this.type === 'recipe') {
+
+            var i = this.elStats.i[0];
+
+            this.level = this.points[i] / this.ratio[i]
+
+        }
 
     }
 
