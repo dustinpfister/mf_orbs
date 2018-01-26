@@ -34,8 +34,6 @@ var Orb = (function () {
 
                 }
 
-                console.log(points[ai] + ',' + points[bi]);
-
                 d = gcd(points[ai], points[bi]);
 
                 if (d > gd) {
@@ -55,25 +53,73 @@ var Orb = (function () {
 
     },
 
+    // get the simple ratio from a set of points (or simplify a ratio)
+    // [0,0,14,2] => [0,0,7,1]
     getSimpleRatio = function (points) {
 
-        var gd = getGcdFromPoints(points);
+        var gd = getGcdFromPoints(points),
+        elStats = {
 
-        return points.map(function (pt) {
+            ct: 0,
+            i: []
 
-            return pt / gd;
+        };
 
-        });
+        // get simple ratio by diving all points by gd
+        var simp = points.map(function (pt, i) {
 
-    };
+                if (pt > 0) {
 
-    console.log(gcd(4, 10));
-    console.log(gcd(10, 4));
+                    elStats.ct += 1;
+                    elStats.i.push(i);
 
-    console.log(getSimpleRatio([5, 10, 0, 0]));
+                }
+
+                return pt / gd;
+
+            });
+
+        // special case for pure Orbs [0,17,0,0] should be [0,1,0,0]
+        if (elStats.ct === 1) {
+
+            simp[elStats.i[0]] = 1;
+
+        }
+
+        return simp;
+
+    },
+
+    // set level when points, and ratio are valid
+    setLevel = function () {
+
+        var i;
+
+        this.level = 1;
+
+        console.log(this.type);
+        console.log(this.ratio);
+
+        if (this.type === 'pure') {
+
+            i = 0;
+            while (i < 4) {
+
+                if (this.points[i] > 0) {
+                    this.level = this.points[i];
+                    return;
+
+                }
+
+                i += 1;
+            }
+
+        }
+
+    }
 
     // set orb values by a given ratio, and level
-    var setByRatio = function (ratio, level) {
+    setByRatio = function (ratio, level) {
 
         var self = this;
 
@@ -81,7 +127,10 @@ var Orb = (function () {
         this.level = level || 1;
         this.ratio = Array.from(ratio) || [1, 0, 0, 0];
 
-        // find points
+        // make sure it is simple
+        this.ratio = getSimpleRatio(this.ratio);
+
+        // find points by multiplying simple ratio by level
         this.points = [];
         this.ratio.forEach(function (pt, i) {
 
@@ -101,22 +150,30 @@ var Orb = (function () {
         this.level = Infinity;
 
         // the lowest point is the level
+        /*
         this.points.forEach(function (pt, i) {
 
-            if (pt < self.level && pt > 0) {
+        if (pt < self.level && pt > 0) {
 
-                self.level = pt;
+        self.level = pt;
 
-            }
+        }
 
         });
+         */
 
+        // find the simple ratio
+        this.ratio = getSimpleRatio(this.points);
+        this.level = 1;
+
+        /*
         // find the ratio from points
         this.points.forEach(function (pt, i) {
 
-            self.ratio[i] = pt / self.level;
+        self.ratio[i] = pt / self.level;
 
         });
+         */
 
     };
 
@@ -247,6 +304,9 @@ var Orb = (function () {
         });
 
         findType.call(this);
+
+        // set final level based on ratio, points, and type
+        setLevel.call(this);
 
     };
 
